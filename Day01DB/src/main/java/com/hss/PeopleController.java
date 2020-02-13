@@ -23,26 +23,31 @@ public class PeopleController {
 	
 	
 	@PatchMapping("/id/{id}/age/{age}")
-	public String updateAge(int id, int newAge) {
+	public String updateAge(@PathVariable int id, @PathVariable("age") int newAge) {
 		Optional<Person> optPerson = personDao.findById(id);
 		if(optPerson.isPresent()) {
-			
+			Person person = optPerson.get();
+			person.setAge(newAge);
+			personDao.save(person);
+			return "Age updated";
 		}
 		else {
 			return "Person with " + id + " is not available";
 		}
-		//Update age of person
-		//If person with given id is not available report 
-		return null;
 	}
 	
 	@DeleteMapping("/{id}")
-	public String deletePerson(int id) {
-		//Delete person
-		//If person with given id is not available report
-		return null;
+	public String deletePerson(@PathVariable int id) {
+		Optional<Person> optPerson = personDao.findById(id);
+		if(optPerson.isPresent()) {
+			Person person = optPerson.get();
+			personDao.delete(person);
+		}
+		else {
+			return "Person with id " + id + " not found";
+		}
+		return "Person deleted";
 	}
-	
 	
 	@PostMapping("/{name}/{age}")
 	public String createPerson(@PathVariable String name, @PathVariable int age) {
@@ -53,7 +58,7 @@ public class PeopleController {
 		return "Person with id " + person.getId() + " created";
 	}
 	
-	@GetMapping("/")
+	@GetMapping
 	public List<Person> getAllPersons() {
 		return (List<Person>)personDao.findAll();
 	}
