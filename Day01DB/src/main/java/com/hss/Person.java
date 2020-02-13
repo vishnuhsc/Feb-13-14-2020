@@ -1,10 +1,14 @@
 package com.hss;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +25,16 @@ public class Person {
 	@Column(name = "age")
 	private int age;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Car> cars;
+	
+	
+	public List<Car> getCars() {
+		return cars;
+	}
+	public void setCars(List<Car> cars) {
+		this.cars = cars;
+	}
 	public int getId() {
 		return id;
 	}

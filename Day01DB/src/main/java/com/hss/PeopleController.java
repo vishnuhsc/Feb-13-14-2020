@@ -1,5 +1,6 @@
 package com.hss;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,32 @@ public class PeopleController {
 
 	@Autowired
 	private PersonDao personDao;
+	
+	@GetMapping("/name/{name}/age/{age}")
+	public List<Person> getByNameOrAge(@PathVariable String name, @PathVariable int age ) {
+		return personDao.findAllByNameOrAge(name, age);
+	}
+	
+	@GetMapping("/name/{name}")
+	public Person getByName(@PathVariable String name) {
+		return personDao.findByName(name);
+	}
+	
+	@GetMapping("/meta")
+	public String getInfo() {
+		String meta = "********************** <br/>";
+		meta += " Class name: " + personDao.getClass().getName() + "<br/><br/>";
+		meta += "<---INTERFACES --> <br/>";
+		for(Class interfaceCls : personDao.getClass().getInterfaces()) {
+			meta += interfaceCls.getName() + "<br/>";
+		}
+		meta += "<br/><---METHODS --> <br/>";
+		for(Method method : personDao.getClass().getMethods()) {
+			meta += method.getName() + "<br/>";
+		}
+		return meta;
+	}
+	
 	
 	//@PostMapping("/create/{name}/{age} WRONG Don't use verbs in url
 	
