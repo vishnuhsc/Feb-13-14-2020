@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -21,12 +24,17 @@ public class Account {
 	@Id
 	@Column(name = "account_number")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Min(1)
+	@Max(100000)
 	private int accountNumber;
 	
 	@Column(name = "owner")
+	@NotNull
 	private String name;
 	
 	@Column
+	@Min(1)
+	@Max(100000)
 	private int balance;
 	
 	@JsonManagedReference

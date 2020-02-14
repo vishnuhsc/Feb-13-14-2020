@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -22,9 +26,12 @@ public class Statement {
 	private int id;
 	
 	@Column
+	@Length(min = 1, max = 40)
 	private String type;
 	
 	@Column
+	@Min(1)
+	@Max(100000)
 	private int amount;
 	
 	@JsonBackReference

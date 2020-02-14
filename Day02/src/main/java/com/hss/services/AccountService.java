@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.hss.entities.Account;
 import com.hss.entities.Statement;
+import com.hss.exceptions.AccountNotFoundException;
 import com.hss.repositories.AccountRepository;
 import com.hss.repositories.StatementRepository;
 
@@ -22,16 +23,16 @@ public class AccountService {
 	private StatementRepository statementRepository;
 
 
-	//@Transactional
-	public void deposit(int accountNumber,int amount, String type) {
-		Optional<Account> optAccount = accountRepository.findById(accountNumber);
-		if(optAccount.isPresent()) {
-			Account account = optAccount.get();
-			account.setBalance(account.getBalance() + amount);
-
-			createStatement(amount, type, account);
-		}
+	@Transactional
+	public void deposit(int accountNumber, int amount, String type) {
+		Account account = accountRepository
+				.findById(accountNumber)
+				.orElseThrow(() -> new AccountNotFoundException(accountNumber));
+		
+		account.setBalance(account.getBalance() + amount);
+		createStatement(amount, type, account);
 	}
+
 
 	@Transactional
 	public void withdraw(int accountNumber,int amount, String type) {
