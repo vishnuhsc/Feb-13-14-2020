@@ -22,6 +22,11 @@ import org.springframework.web.context.request.WebRequest;
 import com.hss.config.ErrorInformation;
 import com.hss.services.AccountService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/bank")
 @Validated
@@ -47,11 +52,15 @@ public class BankController {
 		return meta;
 	}
 	
-
+	@ApiOperation(value = "deposit to the given account number")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Deposit successful"),
+			@ApiResponse(code = 404, message = "Account number not found")
+	})
 	@PostMapping("/deposit")
 	public String deposit(@RequestParam("accountnumber") int accountNumber, 
 			@RequestParam @Min(1) @Max(10000) int amount, 
-			@RequestParam String type) {
+			@RequestParam @ApiParam(example = "Fees, Interest, Salary etc") String type) {
 		accountService.deposit(accountNumber, amount, type);
 		return "Deposit successful";
 	}
