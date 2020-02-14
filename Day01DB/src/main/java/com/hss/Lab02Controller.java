@@ -1,8 +1,10 @@
 package com.hss;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,11 @@ public class Lab02Controller {
 	@Autowired
 	private CarDao carDao;
 	
+	
+	@GetMapping("/lab02/personswithcars/{size}")
+	public List<Person> getPersonsWith2Cars(@PathVariable int size) {
+		return personDao.findAllWithAtleast2Cars(size);
+	}
 	
 	
 	@PostMapping("/lab02/person/{id}")
